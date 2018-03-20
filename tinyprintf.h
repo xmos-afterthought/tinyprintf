@@ -177,6 +177,9 @@ void tfp_printf(char *fmt, ...) _TFP_SPECIFY_PRINTF_FMT(1, 2);
 # if TINYPRINTF_OVERRIDE_LIBC
 #  define printf tfp_printf
 # endif
+#else
+#define init_printf(...)
+#define tfp_printf(...)
 #endif
 
 #ifdef  __cplusplus
