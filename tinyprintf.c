@@ -198,7 +198,11 @@ static char a2u(char ch, const char **src, int base, unsigned int *nump)
     return ch;
 }
 
+#ifdef __xcore__
+static void putchw(void *putp, __attribute__((fptrgroup("putc_group")))putcf putf, struct param *p)
+#else
 static void putchw(void *putp, putcf putf, struct param *p)
+#endif // __xcore__
 {
     char ch;
     int n = p->width;
@@ -250,7 +254,12 @@ static void putchw(void *putp, putcf putf, struct param *p)
     }
 }
 
+
+#ifdef __xcore__
+void tfp_format(void *putp, __attribute__((fptrgroup("putc_group")))putcf putf, const char *fmt, va_list va)
+#else
 void tfp_format(void *putp, putcf putf, const char *fmt, va_list va)
+#endif // __xcore__
 {
     struct param p;
 #ifdef PRINTF_LONG_SUPPORT
@@ -419,6 +428,7 @@ void tfp_format(void *putp, putcf putf, const char *fmt, va_list va)
     }
  abort:;
 }
+
 
 #if TINYPRINTF_DEFINE_TFP_PRINTF
 static putcf stdout_putf;
